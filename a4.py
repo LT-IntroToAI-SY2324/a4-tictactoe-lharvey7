@@ -10,7 +10,7 @@ class TTTBoard:
             represent moves by player 'O' and '*'s are spots no one has yet played on
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.board = ['*'] * 9
     def __str__(self) -> str:
         s = ""
@@ -24,6 +24,35 @@ class TTTBoard:
         # otherwise make the move
         self.board[pos] = player
         return True
+    def has_won(self, player) -> bool:
+        """Check if the given player has won"""
+        x = True
+        y = True
+        for i in [0, 3, 6]:
+            x = True
+            for o in range(3):
+                if self.board[i + o] != player:
+                    x = False
+            if x == True:
+                return x
+        for o in range(3):
+            y = True
+            for i in [0, 3, 6]:
+                if self.board[o + i] != player:
+                    y = False
+            if y == True:
+                return y
+        ps = [player] * 3
+        if self.board[::4] == ps or self.board[2:7:2] == ps:
+            return True
+        return False
+    def game_over(self) -> bool:
+        """Check if the game is over, either because someone has won or  board is full"""
+        if self.has_won("X") or self.has_won("O") or "*" not in self.board:
+            return True
+        return False
+    def clear(self) -> None:
+        self.board = ['*'] * 9
 
 
 def play_tic_tac_toe() -> None:
